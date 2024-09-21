@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Metadata;
 
 class Program
 {
@@ -8,20 +9,26 @@ class Program
         string magic = Console.ReadLine();
         int number = int.Parse(magic);
 
-        Console.Write("What is your guess? ");
-        string response = Console.ReadLine();
-        int user = int.Parse(response);
+        int user = 0;
 
-        // while (user != number)
-        // {
+        while (user != number)
+        {
+            Console.Write("What is your guess? ");
+            user = int.Parse(Console.ReadLine());
+
             if (user < number)
             {
                 Console.WriteLine("Higher");
             }
-            if (user > number)
+            else if (user > number)
             {
                 Console.WriteLine("Lower");
             }
-        // }
+        
+            else
+            {
+                Console.WriteLine("You guessed it!");
+            }
+        }
     }
 }
