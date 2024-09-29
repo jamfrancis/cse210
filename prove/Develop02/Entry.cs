@@ -41,8 +41,8 @@ public class Entry
 
     public void Display()
     {
-        Console.WriteLine($"Date: {_date} - Prompt: {_promptText}");
+        Console.WriteLine($"\nDate: {_date} - Prompt: {_promptText}");
         Console.WriteLine(_entryText);
-        Console.WriteLine($"You were feeling a {_rating}/5.");
+        Console.WriteLine($"You were feeling a {_rating}/5.\n");
     }
 }
