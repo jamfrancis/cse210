@@ -2,10 +2,12 @@ using System;
 
 public class Activity
 {
+    // member variables
     private string _name;
     private string _description;
     protected int _duration;
 
+    // constructor
     public Activity(string name, string description)
     {
         _name = name;
@@ -17,6 +19,8 @@ public class Activity
         Console.Clear();
         Console.WriteLine($"Welcome to the {_name}.\n\n");
         Console.WriteLine($"{_description}\n\n");
+
+        // asks for duration
         Console.Write("How long, in seconds, would you like for your session? ");
 
         if (int.TryParse(Console.ReadLine(), out int duration))
@@ -25,6 +29,7 @@ public class Activity
         }
         else
         {
+            // if no duration is given, 30 secs is default length
             Console.WriteLine("Invalid duration. Setting default duration to 30 seconds.");
             _duration = 30;
         }
@@ -33,6 +38,7 @@ public class Activity
 
     public void DisplayEndingMessage()
     {
+        // displays end message
         Console.WriteLine($"\nWell Done!\n");
         ShowSpinner(5);
         Console.WriteLine($"You have completed another {_duration} seconds of the {_name}!");

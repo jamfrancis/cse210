@@ -2,6 +2,7 @@ using System;
 
 public class ReflectingActivity : Activity
 {
+    // member variables
     private List<string> _prompts = new List<string>
     {
         "Think of a time when you stood up for someone else.",
@@ -42,12 +43,14 @@ public class ReflectingActivity : Activity
 
     public string GetRandomPrompt()
     {
+        // gets a random prompt
         Random random = new Random();
         return _prompts[random.Next(_prompts.Count)];
     }
 
     public string GetRandomQuestion()
     {
+        // gets a random question
         Random random = new Random();
         return _questions[random.Next(_questions.Count)];
     }
@@ -56,6 +59,8 @@ public class ReflectingActivity : Activity
     {
         string prompt = GetRandomPrompt();
         Console.Clear();
+
+        // displays the prompt
         Console.WriteLine("Consider the following prompt:");
         Console.WriteLine($"\n--- {prompt} ---\n");
         Console.WriteLine("When you have something in mind, press enter to continue.");
@@ -64,13 +69,16 @@ public class ReflectingActivity : Activity
 
     public void DisplayQuestions(int duration)
     {
+        // displays question into
         Console.WriteLine("\nNow, reflect on the following questions as they related to this experience.");
         Console.WriteLine($"You may begin in ");
         ShowCountDown(3);
 
+        // keeps track of the elapsed time
         int elapsedTime = 0;
         while (elapsedTime < duration)
         {
+            // displays the question
             string question = GetRandomQuestion();
             Console.WriteLine($"> {question}");
             ShowSpinner(3);

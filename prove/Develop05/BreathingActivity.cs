@@ -19,6 +19,8 @@ public class BreathingActivity : Activity
         int elapsedTime = 0;
         while (elapsedTime < duration)
         {
+            // breathing in: 2 secs, out: 5 secs
+
             Console.Write("Breathe in...");
             ShowCountDown(2);
             elapsedTime += 2;
