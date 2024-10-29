@@ -6,16 +6,33 @@ public class GoalManager
 {
     private List<Goal> _goals;
     private int _score;
-    private const string FileName = "goals.txt"; // Default file name
+    private const string FileName = "goals.txt";
 
     public GoalManager()
     {
         _goals = new List<Goal>();
         _score = 0;
     }
+    public void ResetFile()
+    {
+        Console.WriteLine("Are you sure? Type 'Y' to permanently reset!");
 
+        string input = Console.ReadLine();
+        if (input?.ToUpper() == "Y")
+        {
+            if (File.Exists(FileName))
+            {
+                File.Delete(FileName);
+            }
+
+            _goals.Clear();
+            _score = 0;
+            Console.WriteLine("Goals reset successfully.");
+        }
+    }
     public void Start()
     {
+        LoadGoals(FileName);
         while (true)
         {
             Console.Clear();
@@ -132,7 +149,7 @@ public class GoalManager
         
         if (int.TryParse(Console.ReadLine(), out index) && index > 0 && index <= _goals.Count)
         {
-            index -= 1; // Adjusting to 0-based index
+            index -= 1;
             _goals[index].RecordEvent();
             _score += _goals[index].GetPoints();
             Console.WriteLine($"Congratulations! You have earned {_goals[index].GetPoints()} points!");
@@ -152,37 +169,22 @@ public class GoalManager
     }
 
 
-    public void SaveGoals(string filename)
+   public void SaveGoals(string filename)
 {
-    // Read the existing file contents
     List<string> lines = new List<string>();
-    if (File.Exists(filename))
+
+    lines.Add(_score.ToString());
+
+    foreach (Goal goal in _goals)
     {
-        lines.AddRange(File.ReadAllLines(filename));
+        lines.Add(goal.GetStringRepresentation());
     }
 
-    // Update the first line with the new score or add it if the file is empty
-    if (lines.Count > 0)
-    {
-        lines[0] = _score.ToString(); // Replace the first line with the new score
-    }
-    else
-    {
-        lines.Add(_score.ToString()); // Add the score if the file was empty
-    }
-
-    // Append new goals to the file
     using (StreamWriter writer = new StreamWriter(filename, false))
     {
         foreach (string line in lines)
         {
             writer.WriteLine(line);
-        }
-
-        // Append each new goal's string representation
-        foreach (Goal goal in _goals)
-        {
-            writer.WriteLine(goal.GetStringRepresentation());
         }
     }
 
@@ -191,22 +193,12 @@ public class GoalManager
 
     public void LoadGoals(string filename)
     {
-        // Check if the file exists
-        if (!File.Exists(filename))
-        {
-            Console.WriteLine("No saved goals found.");
-            return; // Do nothing if the file doesn't exist
-        }
-
-        try
-        {
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                // Read the total score from the first line
+        using (StreamReader reader = new StreamReader(filename))
+            {   
                 string scoreLine = reader.ReadLine();
                 if (int.TryParse(scoreLine, out int loadedScore))
                 {
-                    _score = loadedScore; // Update the score
+                    _score = loadedScore; 
                 }
                 else
                 {
@@ -219,7 +211,6 @@ public class GoalManager
                 {
                     string[] parts = line.Split(',');
 
-                    // Handle each goal type
                     if (parts.Length > 0)
                     {
                         string goalType = parts[0];
@@ -269,27 +260,4 @@ public class GoalManager
                 Console.WriteLine("Goals loaded successfully.");
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading goals: {ex.Message}");
-        }
-    }
-
-    private void ResetFile()
-    {
-        Console.WriteLine("Are you sure? Type 'Y' to permanently reset!");
-
-        string input = Console.ReadLine();
-        if (input?.ToUpper() == "Y")
-        {
-            if (File.Exists(FileName))
-            {
-                File.Delete(FileName);
-            }
-
-            _goals.Clear();
-            _score = 0;
-            Console.WriteLine("Goals reset successfully.");
-        }
-    }
 }
